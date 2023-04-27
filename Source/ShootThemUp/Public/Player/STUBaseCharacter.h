@@ -33,7 +33,14 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+	
+    UPROPERTY(BlueprintReadOnly)
+    bool IsMovingForward;
+
 private:
-    void MoveForward(float Amount);
+    //UFUNCTION()
+	void MoveForward(float Amount);
     void MoveRight(float Amount);
+    
+
 };
