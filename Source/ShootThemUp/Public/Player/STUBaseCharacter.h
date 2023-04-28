@@ -37,6 +37,9 @@ public:
     UPROPERTY(BlueprintReadOnly)
     bool IsMovingForward;
 
+	UFUNCTION(BlueprintCallable, Category = "Movement")
+    float GetMovementDirection() const;
+
 private:
     //UFUNCTION()
 	void MoveForward(float Amount);
