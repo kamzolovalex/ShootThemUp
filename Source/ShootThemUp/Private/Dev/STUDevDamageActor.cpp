@@ -3,6 +3,7 @@
 
 #include "Dev/STUDevDamageActor.h"
 #include "DrawDebugHelpers.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 ASTUDevDamageActor::ASTUDevDamageActor()
@@ -25,9 +26,9 @@ void ASTUDevDamageActor::BeginPlay()
 // Called every frame
 void ASTUDevDamageActor::Tick(float DeltaTime)
 {
-	Super::Tick(DeltaTime);
+    Super::Tick(DeltaTime);
 
-	DrawDebugSphere(GetWorld(), GetActorLocation(), Radius, 23, SphereColor);
-
+    DrawDebugSphere(GetWorld(), GetActorLocation(), Radius, 23, SphereColor);
+    UGameplayStatics::ApplyRadialDamage(GetWorld(), Damage, GetActorLocation(), Radius, DamageType, {}, this, nullptr, DoFullDamage);
 }
 
