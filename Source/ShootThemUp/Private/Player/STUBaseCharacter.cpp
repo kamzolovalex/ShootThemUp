@@ -4,10 +4,12 @@
 #include "Player/STUBaseCharacter.h"
 #include "Camera/CameraComponent.h"
 #include "Components/InputComponent.h"
-#include "GameFramework/SpringArmComponent.h"
-#include "GameFramework/Character.h"
 #include "Components/STUHealthComponent.h"
 #include "Components/TextRenderComponent.h"
+#include "GameFramework/Character.h"
+#include "GameFramework/CharacterMovementComponent.h"
+#include "GameFramework/SpringArmComponent.h"
+#include "GameFramework/Controller.h"
 
 DEFINE_LOG_CATEGORY_STATIC(BaseCharacterLog, All, All);
 
@@ -36,18 +38,20 @@ void ASTUBaseCharacter::BeginPlay()
 
     check(HealthComponent);
     check(HealthTextComponent);
-}
+    check(GetCharacterMovement());
 
+    HealthChanged(HealthComponent->GetHealth());
+    HealthComponent->OnDeath.AddUObject(this, &ASTUBaseCharacter::OnDeath);
+    HealthComponent->OnHealthChanged.AddUObject(this, &ASTUBaseCharacter::HealthChanged);
+}
+void ASTUBaseCharacter::HealthChanged(float Health)
+{
+    HealthTextComponent->SetText(FText::FromString(FString::Printf(TEXT("%.0f"), Health)));
+}
 // Called every frame
 void ASTUBaseCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
-    const auto Health = HealthComponent->GetHealth();
-    HealthTextComponent->SetText(FText::FromString(FString::Printf(TEXT("%.0f"), Health)));
-
-    // Debug take damage
-    //TakeDamage(0.1f, FDamageEvent{}, Controller, this);
 }
 
 
@@ -87,4 +91,18 @@ void ASTUBaseCharacter::MoveRight(float Amount)
 {
     if (Amount == 0.0f) return;
     AddMovementInput(GetActorRightVector(), Amount);
+}
+
+void ASTUBaseCharacter::OnDeath()
+{
+    UE_LOG(BaseCharacterLog, Display, TEXT("%s is dead"), *GetName());
+
+    PlayAnimMontage(DeathAnimMontage);
+
+    GetCharacterMovement()->DisableMovement();
+    SetLifeSpan(5.0f);
+    if (Controller)
+    {
+        Controller->ChangeState(NAME_Spectating);
+    }
 }
