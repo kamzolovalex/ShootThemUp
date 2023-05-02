@@ -3,6 +3,9 @@
 
 #include "Components/STUHealthComponent.h"
 #include "GameFramework/Actor.h"
+//#include "TimerManager.h"
+//#include "Engine/World.h"
+
 
 DEFINE_LOG_CATEGORY_STATIC(LogHealthComponent, All, All);
 
@@ -24,6 +27,8 @@ void USTUHealthComponent::BeginPlay()
     {
         ComponentOwner->OnTakeAnyDamage.AddDynamic(this, &USTUHealthComponent::OnTakeAnyDamage);
 	}
+
+    
 }
 
 void USTUHealthComponent::OnTakeAnyDamage(
@@ -37,4 +42,24 @@ void USTUHealthComponent::OnTakeAnyDamage(
     {
         OnDeath.Broadcast();
 	}
+    
+    if (AutoHeal)
+    {
+        GetWorld()->GetTimerManager().SetTimer(HealHandle, this, &USTUHealthComponent::Heal, HealUpdateTime, true, HealDelay);
+    }
+}
+
+void USTUHealthComponent::Heal()
+{
+    if (Health < MaxHealth)
+    {
+        UE_LOG(LogHealthComponent, Display, TEXT("Character starded healing: +%f"), HealModifier);
+        Health = FMath::Clamp(Health + HealModifier, HealModifier, MaxHealth);
+        OnHealthChanged.Broadcast(Health);
+    }
+    else
+    {
+        GetWorld()->GetTimerManager().ClearTimer(HealHandle);
+        return;
+    }
 }
