@@ -30,6 +30,7 @@ void USTUWeaponComponent::SpawnWeapon()
     
     FAttachmentTransformRules AttachmentRule(EAttachmentRule::SnapToTarget, false);
     CurrentWeapon->AttachToComponent(Character->GetMesh(), AttachmentRule, WeaponAttachPointName);
+    CurrentWeapon->SetOwner(Character);
 }
 
 void USTUWeaponComponent::Fire()
