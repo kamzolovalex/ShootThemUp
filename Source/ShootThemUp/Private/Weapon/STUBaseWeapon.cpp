@@ -69,8 +69,9 @@ bool ASTUBaseWeapon::GetTraceData(FVector& TraceStart, FVector& TraceEnd) const
 {
     FVector ViewLocation;
     FRotator ViewRotation;
-    if(!GetPlayerViewPoint(ViewLocation, ViewRotation)) return false;
+    if (!GetPlayerViewPoint(ViewLocation, ViewRotation)) return false;
 
+    TraceStart = ViewLocation;
     const FVector ShootDirection = ViewRotation.Vector();
     TraceEnd = TraceStart + ShootDirection * TraceMaxDistance;
     return true;
@@ -86,9 +87,3 @@ void ASTUBaseWeapon::MakeHit(FHitResult& HitResult, const FVector& TraceStart, c
     GetWorld()->LineTraceSingleByChannel(HitResult, TraceStart, TraceEnd, ECollisionChannel::ECC_Visibility, CollisionParams);
 }
 
-void ASTUBaseWeapon::MakeDamage(FHitResult& HitResult) 
-{
-    const auto DamagedActor = HitResult.GetActor();
-    if (!DamagedActor) return;
-    DamagedActor->TakeDamage(DamageAmount, FDamageEvent(), GetPlayerController(), this);
-}

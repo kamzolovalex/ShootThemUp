@@ -21,6 +21,6 @@ class SHOOTTHEMUP_API ASTULauncherWeapon : public ASTUBaseWeapon
     UPROPERTY(EditDefaultsOnly, BluePrintReadWrite, Category = "Weapon")
     TSubclassOf<ASTUProjectile> ProjectileClass;
 
+
     virtual void MakeShot() override;
-	
 };
