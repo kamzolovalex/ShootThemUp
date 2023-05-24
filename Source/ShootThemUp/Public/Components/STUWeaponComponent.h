@@ -4,9 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
+#include "STUCoreTypes.h"
 #include "STUWeaponComponent.generated.h"
 
 class ASTUBaseWeapon;
+
 
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
@@ -21,6 +23,7 @@ public:
 	void StartFire();
 	void StopFire();
     void NextWeapon();
+    void Reload();
 
 protected:
 
@@ -28,7 +31,7 @@ protected:
     virtual void EndPlay(const EEndPlayReason::Type EndPlayReason);
 
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
-    TArray<TSubclassOf<ASTUBaseWeapon>> WeaponClasses;
+    TArray<FWeaponData> WeaponData;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
     FName WeaponEquipSocketName = "WeaponSocket";
@@ -39,6 +42,7 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Animation")
     UAnimMontage* EquipAnimMontage;
 
+
 private:
 	UPROPERTY()
     ASTUBaseWeapon* CurrentWeapon = nullptr;
@@ -46,8 +50,12 @@ private:
 	UPROPERTY()
     TArray<ASTUBaseWeapon*> Weapons;
 
+    UPROPERTY()
+    UAnimMontage* CurrentReloadAnimMontage = nullptr;
+
 	int32 CurrentWeaponIndex = 0;
     bool EquipAnimInProgress = false;
+    bool ReloadAnimInProgress = false;
 
     void SpawnWeapons();
     void AttachWeaponToSocket(ASTUBaseWeapon* Weapon, USceneComponent* SceneComponent, const FName& SocketName);
@@ -56,8 +64,14 @@ private:
 	void PlayAnimMontage(UAnimMontage* Animation);
     void InitAnimations();
     void OnEquipFinished(USkeletalMeshComponent* MeshComponent);
+    void OnReloadFinished(USkeletalMeshComponent* MeshComponent);
 
     bool CanFire() const;
     bool CanEquip() const;
+    bool CanReload() const;
+
+    void OnEmptyClip();
+    void ChangeClip();
+
 
 };
