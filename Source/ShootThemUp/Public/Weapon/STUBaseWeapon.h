@@ -20,8 +20,14 @@ public:
 
     virtual void StartFire();
     virtual void StopFire();
+
     void ChangeClip();
     bool CanReload() const;
+
+    FWeaponUIData GetUIData() const { return UIData; }
+
+    FAmmoData GetWeaponAmmoData() const { return CurrentAmmo; }
+
 
 
 
@@ -38,6 +44,9 @@ protected:
 
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Weapon")
     FAmmoData DefaultAmmo{15, 10, false};
+
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "UI")
+    FWeaponUIData UIData;
 
 
     
