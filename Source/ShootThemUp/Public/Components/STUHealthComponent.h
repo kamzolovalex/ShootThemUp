@@ -30,6 +30,9 @@ public:
     UFUNCTION(BlueprintCallable)
     float GetHealthPercent() const { return Health / MaxHealth; }
 
+    bool TryToAddHealth(float HealthAmount);
+    bool IsHealthFull() const;
+
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
@@ -59,4 +62,6 @@ private:
 
     void Heal();
     void SetHealth(float NewHealth);
+
+
 };

@@ -16,9 +16,6 @@ ASTUProjectile::ASTUProjectile()
     CollisionComponent = CreateDefaultSubobject<USphereComponent>("SphereComponent");
     CollisionComponent->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
     CollisionComponent->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Block);
-
-
-        
     SetRootComponent(CollisionComponent);
 
 	MovementComponent = CreateDefaultSubobject<UProjectileMovementComponent>("ProjectileMovementComponent");

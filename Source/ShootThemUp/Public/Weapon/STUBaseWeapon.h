@@ -16,7 +16,7 @@ class SHOOTTHEMUP_API ASTUBaseWeapon : public AActor
 	
 public:	
 	ASTUBaseWeapon();
-    FOnClipEmptySignature OnClipEmpty;
+    FOnClipEmptySignatur OnClipEmpty;
 
     virtual void StartFire();
     virtual void StopFire();
@@ -28,7 +28,7 @@ public:
 
     FAmmoData GetWeaponAmmoData() const { return CurrentAmmo; }
 
-
+    bool TryToAddAmmo(int32 ClipsAmount);
 
 
 protected:
@@ -48,8 +48,6 @@ protected:
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "UI")
     FWeaponUIData UIData;
 
-
-    
 	virtual void BeginPlay() override;
 
 	virtual void MakeShot();
@@ -66,6 +64,7 @@ protected:
     bool IsClipEmpty() const;
 
     void LogAmmo();
+    bool IsAmmoFull();
 
     private:
     FAmmoData CurrentAmmo;

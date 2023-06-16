@@ -50,10 +50,9 @@ void USTUHealthComponent::OnTakeAnyDamage(
 
 void USTUHealthComponent::Heal()
 {
-    UE_LOG(LogHealthComponent, Display, TEXT("Character starded healing: +%f"), HealModifier);
     SetHealth(Health + HealModifier);
 
-    if (FMath::IsNearlyEqual(Health, MaxHealth))
+    if (IsHealthFull() && GetWorld())
     {
         GetWorld()->GetTimerManager().ClearTimer(HealHandle);
     }
@@ -63,4 +62,16 @@ void USTUHealthComponent::SetHealth(float NewHealth)
 {
     Health = FMath::Clamp(NewHealth, 0.0f, MaxHealth);
     OnHealthChanged.Broadcast(Health);
+}
+
+bool USTUHealthComponent::TryToAddHealth(float HealthAmount) 
+{
+    if (IsHealthFull() || IsDead()) return false;
+    SetHealth(Health + HealthAmount);
+    return true;
+}
+
+bool USTUHealthComponent::IsHealthFull() const 
+{
+    return FMath::IsNearlyEqual(Health, MaxHealth);
 }
