@@ -19,7 +19,6 @@ class SHOOTTHEMUP_API ASTUBaseCharacter : public ACharacter
 	GENERATED_BODY()
 
 public:
-	// Sets default values for this character's properties
 	ASTUBaseCharacter();
 
 protected:
@@ -72,7 +71,7 @@ private:
     void MoveRight(float Amount);
 
 	void OnDeath();
-    void HealthChanged(float Health);
+    void HealthChanged(float Health, float HealthDelta);
 
 	UFUNCTION()
 	void OnGroundLanded(const FHitResult& Hit);
