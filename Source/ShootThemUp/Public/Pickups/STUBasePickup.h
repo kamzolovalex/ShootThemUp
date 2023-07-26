@@ -26,8 +26,11 @@ protected:
 	virtual void BeginPlay() override;
     virtual void NotifyActorBeginOverlap(AActor* OtherActor) override;
 
+	FTimerHandle RespawnTimerHandle;
+
 public:	
 	virtual void Tick(float DeltaTime) override;
+    bool CouldBeTaken();
 
 private:
 

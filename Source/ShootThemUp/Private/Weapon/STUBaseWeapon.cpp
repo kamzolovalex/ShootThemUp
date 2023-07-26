@@ -140,7 +140,7 @@ void ASTUBaseWeapon::ChangeClip()
         CurrentAmmo.Clips--;
     }
     CurrentAmmo.Bullets = DefaultAmmo.Bullets;
-    UE_LOG(LogTemp, Display, TEXT("------Change Clip------"));
+    //UE_LOG(LogTemp, Display, TEXT("------Change Clip------"));
 }
 
 void ASTUBaseWeapon::LogAmmo() 

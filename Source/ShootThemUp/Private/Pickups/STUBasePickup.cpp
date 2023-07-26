@@ -57,7 +57,6 @@ void ASTUBasePickup::PickUpWasTaken()
         GetRootComponent()->SetVisibility(false, true);
     }
 
-    FTimerHandle RespawnTimerHandle;
     GetWorldTimerManager().SetTimer(RespawnTimerHandle, this, &ASTUBasePickup::PickupRespawn, RespawnTime);
 }
 void ASTUBasePickup::PickupRespawn() 
@@ -74,4 +73,9 @@ void ASTUBasePickup::GenerateRotaionYaw()
 {
     const auto Direction = FMath::RandBool() ? 1.0f : -1.0f;
     RotationYaw = FMath::RandRange(1.0f, 2.0f) * Direction;
+}
+
+bool ASTUBasePickup::CouldBeTaken() 
+{
+    return !GetWorldTimerManager().IsTimerActive(RespawnTimerHandle);
 }

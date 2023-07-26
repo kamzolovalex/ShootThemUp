@@ -250,3 +250,15 @@ bool USTUWeaponComponent::GetWeaponAmmoData(FAmmoData& AmmoData) const
       }
       return false;
   }
+
+bool USTUWeaponComponent::NeedAmmo(TSubclassOf<ASTUBaseWeapon> WeaponType)
+{
+      for (const auto Weapon : Weapons)
+      {
+          if (Weapon && Weapon->IsA(WeaponType))
+          {
+              return !Weapon->IsAmmoFull();
+          }
+      }
+      return false;
+}
