@@ -10,7 +10,7 @@
 ASTUAICharacter::ASTUAICharacter(const FObjectInitializer& ObjInit)
     : Super(ObjInit.SetDefaultSubobjectClass<USTUAIWeaponComponent>("Weaponomponent"))
 {
-    AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
+    AutoPossessAI = EAutoPossessAI::Disabled;
     AIControllerClass = ASTUAICharacter::StaticClass();
 
     bUseControllerRotationYaw = false;
