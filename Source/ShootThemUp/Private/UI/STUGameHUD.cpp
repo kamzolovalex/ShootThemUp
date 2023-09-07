@@ -4,22 +4,41 @@
 #include "UI/STUGameHUD.h"
 #include "Engine/Canvas.h"
 #include "Blueprint/UserWidget.h"
+#include "STUGameModeBase.h"
 
+DEFINE_LOG_CATEGORY_STATIC(LogSTUGameHUD, All, All);
+
+void ASTUGameHUD::DrawHUD() 
+{
+    Super::DrawHUD();
+
+    //DrawCrosshair();
+}
 
 void ASTUGameHUD::BeginPlay()
 {
     Super::BeginPlay();
-    auto PlayerHUDWidget = CreateWidget<UUserWidget>(GetWorld(), PlayerHUDWidjetClass);
-    if (PlayerHUDWidget)
+
+    GameWidgets.Add(ESTUMatchState::InProgress, CreateWidget<UUserWidget>(GetWorld(), PlayerHUDWidjetClass));
+    GameWidgets.Add(ESTUMatchState::Pause, CreateWidget<UUserWidget>(GetWorld(), PauseWidjetClass));
+
+    for (auto GameWidgetPair : GameWidgets)
     {
-        PlayerHUDWidget->AddToViewport();
+        const auto GameWidget = GameWidgetPair.Value;
+        if (!GameWidget) continue;
+        
+        GameWidget->AddToViewport();
+        GameWidget->SetVisibility(ESlateVisibility::Hidden);
     }
-}
 
-void ASTUGameHUD::DrawHUD() {
-    Super::DrawHUD();
-
-    //DrawCrosshair();
+    if (GetWorld())
+    {
+        const auto GameMode = Cast<ASTUGameModeBase>(GetWorld()->GetAuthGameMode());
+        if (GameMode)
+        {
+            GameMode->OnMatchStateChanged.AddUObject(this, &ASTUGameHUD::OnMatchStateChanged);
+        }
+    }
 }
 
 void ASTUGameHUD::DrawCrosshair() {
@@ -32,4 +51,26 @@ void ASTUGameHUD::DrawCrosshair() {
 
     DrawLine(Center.Min - HalfLineSize, Center.Max, Center.Min + HalfLineSize, Center.Max, LineColor, LineThikness);
     DrawLine(Center.Min, Center.Max - HalfLineSize, Center.Min, Center.Max + HalfLineSize, LineColor, LineThikness);
+}
+
+void ASTUGameHUD::OnMatchStateChanged(ESTUMatchState State) 
+{
+
+    if (CurrentWidget)
+    {
+        CurrentWidget->SetVisibility(ESlateVisibility::Hidden);
+    }
+
+    if (GameWidgets.Contains(State))
+    {
+        CurrentWidget = GameWidgets[State];
+    }
+
+    if (CurrentWidget)
+    {
+        CurrentWidget->SetVisibility(ESlateVisibility::Visible);
+    }
+     
+    UE_LOG(LogSTUGameHUD, Display, TEXT("Match state changed: %s"), *UEnum::GetValueAsString(State));
+
 }
