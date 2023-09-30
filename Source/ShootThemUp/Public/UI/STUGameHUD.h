@@ -7,9 +7,8 @@
 #include "STUCoreTypes.h"
 #include "STUGameHUD.generated.h"
 
-/**
- * 
- */
+class USTUBaseWidget;
+
 UCLASS()
 class SHOOTTHEMUP_API ASTUGameHUD : public AHUD
 {
@@ -23,19 +22,19 @@ protected:
     TSubclassOf<UUserWidget> PlayerHUDWidjetClass;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "UI")
-    TSubclassOf<UUserWidget> PauseWidjetClass;
+    TSubclassOf<UUserWidget> PauseWidjetClass;	
+	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "UI")
+    TSubclassOf<UUserWidget> GameOverWidjetClass;
 
 	virtual void BeginPlay() override;
 
 private:
     UPROPERTY()
-    TMap<ESTUMatchState, UUserWidget*> GameWidgets;
+    TMap<ESTUMatchState, USTUBaseWidget*> GameWidgets;
 
 	UPROPERTY()
-    UUserWidget* CurrentWidget = nullptr;
-
-
-	void DrawCrosshair();
+    USTUBaseWidget* CurrentWidget = nullptr;
 
 	void OnMatchStateChanged(ESTUMatchState State);
 	

@@ -13,7 +13,7 @@ USTURespawnComponent::USTURespawnComponent()
 void USTURespawnComponent::Respawn(int32 RespawnTime)
 {
     if (!GetWorld()) return;
-
+    UE_LOG(LogTemp, Display, TEXT("Respawn started"));
 	RespawnCountDown = RespawnTime;
     GetWorld()->GetTimerManager().SetTimer(RespawnTimerHandle, this, &USTURespawnComponent::RespawnTimerUpdate, 1.0f, true);
 

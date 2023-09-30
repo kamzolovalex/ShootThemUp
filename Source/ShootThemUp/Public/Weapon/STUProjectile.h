@@ -9,6 +9,7 @@
 class USphereComponent;
 class UProjectileMovementComponent;
 class USTUWeaponFXComponent;
+class USoundCue;
 
 UCLASS()
 class SHOOTTHEMUP_API ASTUProjectile : public AActor
@@ -46,6 +47,9 @@ protected:
 
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Weapon")
     float LifeSeconds = 5.0f;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Sound");
+    USoundCue* ProjectileExplosionSound;
 
 	AController* GetController() const;
 

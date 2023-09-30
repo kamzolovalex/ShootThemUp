@@ -7,6 +7,8 @@
 #include "DrawDebugHelpers.h"
 #include "Kismet/GameplayStatics.h"
 #include "Weapon/Components/STUWeaponFXComponent.h"
+#include "Sound/SoundCue.h"
+#include "Kismet/GamePlayStatics.h"
 
 
 // Sets default values
@@ -53,7 +55,7 @@ void ASTUProjectile::OnProjectileHit(
     UGameplayStatics::ApplyRadialDamage(
         GetWorld(), DamageAmount, GetActorLocation(), DamageRadius, DamageType, {GetOwner()}, this, GetController(), DoFullDamage);
     
-    //DrawDebugSphere(GetWorld(), GetActorLocation(), DamageRadius, 24, FColor::Red, false, 5.0f);
+    UGameplayStatics::PlaySoundAtLocation(GetWorld(), ProjectileExplosionSound, GetActorLocation());
     WeaponFXComponent->PlayImpactFX(Hit);
     Destroy();
 }

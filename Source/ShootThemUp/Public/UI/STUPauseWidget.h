@@ -3,23 +3,23 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Blueprint/UserWidget.h"
+#include "UI/STUBaseWidget.h"
 #include "STUPauseWidget.generated.h"
 
 class UButton;
 
 UCLASS()
-class SHOOTTHEMUP_API USTUPauseWidget : public UUserWidget
+class SHOOTTHEMUP_API USTUPauseWidget : public USTUBaseWidget
 {
 	GENERATED_BODY()
-public:
-    virtual bool Initialize() override;
 
 protected:
+    virtual void NativeOnInitialized() override;
+
     UPROPERTY(meta = (BindWidget))
     UButton* ClearPauseButton;
 
-	private:
+private:
     UFUNCTION()
     void OnClearPause();
 };
