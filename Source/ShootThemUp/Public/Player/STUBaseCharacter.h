@@ -48,6 +48,8 @@ protected:
 	virtual void BeginPlay() override;
     virtual void OnDeath();
     virtual void HealthChanged(float Health, float HealthDelta);
+    virtual void TurnOff() override;
+    virtual void Reset() override;
 
 public:	
 	virtual void Tick(float DeltaTime) override;
